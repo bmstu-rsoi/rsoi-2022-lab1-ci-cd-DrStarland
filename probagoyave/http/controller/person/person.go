@@ -3,7 +3,6 @@ package person
 import (
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/DrStarland/probagoyave/database/model"
 	"goyave.dev/goyave/v4"
@@ -27,12 +26,17 @@ func Index(response *goyave.Response, request *goyave.Request) {
 
 // Получить информацию о человеке по его ID
 func Show(response *goyave.Response, request *goyave.Request) {
-	strID := request.Params["personId"]
-	ID, _ := strconv.Atoi(strID)
-	db := database.GetConnection()
-	var results []map[string]interface{}
-	db.Table("people").Find(&results, "id = ?", ID)
-	response.JSON(http.StatusOK, results)
+	// strID := request.Params["personId"]
+	// ID, _ := strconv.Atoi(strID)
+	// db := database.GetConnection()
+	// var results []map[string]interface{}
+	// db.Table("people").Find(&results, "id = ?", ID)
+	// response.JSON(http.StatusOK, results)
+	pers := model.Person{}
+	result := database.Conn().First(&pers, request.Params["personID"])
+	if response.HandleDatabaseError(result) {
+		response.JSON(http.StatusOK, pers)
+	}
 }
 
 // Метод создания новой записи о человеке
