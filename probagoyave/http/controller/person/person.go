@@ -1,6 +1,7 @@
 package person
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 
@@ -13,77 +14,34 @@ func Hohoho(response *goyave.Response, request *goyave.Request) {
 	response.String(http.StatusOK, "ohohoh")
 }
 
-// Method	URI	Handler name	Description
-// GET	/product	Index()	Get the products list
-// POST	/product	Store()	Create a product
-// GET	/product/{id}	Show()	Show a product
 // PUT or PATCH	/product/{id}	Update()	Update a product
 // DELETE	/product/{id}	Destroy()	Delete a product
 
-// SayHi is a controller handler writing "Hi!" as a response.
-//
-// The Response object is used to write your response.
-// https://goyave.dev/guide/basics/responses.html
-//
-// The Request object contains all the information about the incoming request, including it's parsed body,
-// query params and route parameters.
-// https://goyave.dev/guide/basics/requests.html
-func AllPersons(response *goyave.Response, request *goyave.Request) {
-	// temp := dbmod.Person{}
+// Получить информацию по всем людям
+func Index(response *goyave.Response, request *goyave.Request) {
 	db := database.GetConnection()
-	//db.AutoMigrate(&dbmod.Person{})
-	// Create
-	// pers := dbmod.PersonGenerator().(*dbmod.Person)
-	// db.Create(pers)
-	// db.Raw("select * from \"people\" where \"people\".\"id\" == 5").Scan(&temp)
-	// Read
-	// db.First(&temp, 7) // find product with integer primary key
-
-	//log.Println(db)
-
 	var results []map[string]interface{}
-	//var results []dbmod.Person
-	//db.Table("people").Find(&results)
 	db.Model(&model.Person{}).Find(&results)
-
 	response.JSON(http.StatusOK, results)
 }
 
-func GetPersonByID(response *goyave.Response, request *goyave.Request) {
-	// temp := dbmod.Person{}
+// Получить информацию о человеке по его ID
+func Show(response *goyave.Response, request *goyave.Request) {
 	strID := request.Params["personId"]
 	ID, _ := strconv.Atoi(strID)
 	db := database.GetConnection()
-	//db.AutoMigrate(&dbmod.Person{})
-	// Create
-	// pers := dbmod.PersonGenerator().(*dbmod.Person)
-	// db.Create(pers)
-	// db.Raw("select * from \"people\" where \"people\".\"id\" == 5").Scan(&temp)
-	// Read
-	// db.First(&temp, 7) // find product with integer primary key
-
-	//log.Println(db)
-
 	var results []map[string]interface{}
-	//var results []dbmod.Person
 	db.Table("people").Find(&results, "id = ?", ID)
-	//db.Model(&model.Person{}).Select("*").Where()
 	response.JSON(http.StatusOK, results)
 }
 
-func CreatePerson(response *goyave.Response, request *goyave.Request) {
-	// product := model.Product{
-	// 	Name:  request.String("name"),
-	// 	Price: request.Numeric("price"),
-	// }
-	// if err := database.Conn().Create(&product).Error; err != nil {
-	// 	response.Error(err)
-	// } else {
-	// 	response.JSON(http.StatusCreated, map[string]uint{"id": product.ID})
-	// }
+// Метод создания новой записи о человеке
+func Store(response *goyave.Response, request *goyave.Request) {
+	log.Println(request.Data)
+
 	person := model.Person{
 		Name:    request.String("name"),
-		Age:     int32(request.Numeric("age")),
+		Age:     int32(request.Integer("age")),
 		Address: request.String("address"),
 		Work:    request.String("work"),
 	}
@@ -97,6 +55,84 @@ func CreatePerson(response *goyave.Response, request *goyave.Request) {
 	}
 }
 
-// func Echo(response *goyave.Response, request *goyave.Request) {
-// 	response.String(http.StatusOK, request.String("text"))
-// }
+// Метод обновления информации о человеке
+func Update(response *goyave.Response, request *goyave.Request) {
+	pers := model.Person{}
+	db := database.Conn()
+	result := db.Select("id").First(&pers, request.Params["personID"])
+	if response.HandleDatabaseError(result) {
+		age, ageExist := request.Data["age"]
+		name, nameExist := request.Data["name"]
+		address, addrExist := request.Data["address"]
+		work, workExist := request.Data["work"]
+
+		if !(ageExist || nameExist || addrExist || workExist) {
+			response.Status(http.StatusBadRequest)
+			return
+		}
+
+		if name != nil {
+			name := request.String("name")
+			if err := db.Model(&pers).Update("name", name).Error; err != nil {
+				response.Error(err)
+			}
+		}
+
+		if age != nil {
+			age := int32(request.Integer("age"))
+			if err := db.Model(&pers).Update("age", age).Error; err != nil {
+				response.Error(err)
+			}
+		}
+
+		if work != nil {
+			work := request.String("work")
+			if err := db.Model(&pers).Update("work", work).Error; err != nil {
+				response.Error(err)
+			}
+		}
+
+		if address != nil {
+			address := request.String("address")
+			if err := db.Model(&pers).Update("address", address).Error; err != nil {
+				response.Error(err)
+			}
+		}
+	}
+	response.Status(http.StatusOK)
+}
+
+// Метод удаления информации о человеке
+func Destroy(response *goyave.Response, request *goyave.Request) {
+	pers := model.Person{}
+	db := database.Conn()
+	result := db.Select("id").First(&pers, request.Params["personID"])
+	if response.HandleDatabaseError(result) {
+		if err := db.Delete(&pers).Error; err != nil {
+			response.Error(err)
+			log.Println(err.Error())
+		}
+	}
+
+	// Person for ID was removed
+	response.WriteHeader(http.StatusNoContent)
+}
+
+// 	// temp := dbmod.Person{}
+// 	db := database.GetConnection()
+// 	//db.AutoMigrate(&dbmod.Person{})
+// 	// Create
+// 	// pers := dbmod.PersonGenerator().(*dbmod.Person)
+// 	// db.Create(pers)
+// 	// db.Raw("select * from \"people\" where \"people\".\"id\" == 5").Scan(&temp)
+// 	// Read
+// 	// db.First(&temp, 7) // find product with integer primary key
+
+// 	//log.Println(db)
+
+// 	var results []map[string]interface{}
+// 	//var results []dbmod.Person
+// 	//db.Table("people").Find(&results)
+// 	db.Model(&model.Person{}).Find(&results)
+
+// 	response.JSON(http.StatusOK, results)

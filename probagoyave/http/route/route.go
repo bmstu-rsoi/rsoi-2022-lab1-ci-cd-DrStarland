@@ -31,11 +31,13 @@ func Register(router *goyave.Router) {
 	// Route with validation
 	router.Post("/echo", hello.Echo).Validate(hello.EchoRequest)
 
-	router.Get("/persons", person.AllPersons)
-	router.Get("/persons/{personId}", person.GetPersonByID)
-	router.Post("/persons", person.CreatePerson)
-	router.Patch("/persons/{personId}", hello.SayHi)
-	router.Delete("/persons/{personId}", hello.SayHi)
+	subrouter := router.Subrouter("/api/v1")
+
+	subrouter.Get("/persons", person.Index)
+	subrouter.Get("/persons/{personID}", person.Show)
+	subrouter.Post("/persons", person.Store).Validate(person.PersonRequest)
+	subrouter.Patch("/persons/{personID}", person.Update).Validate(person.PatchRequest)
+	subrouter.Delete("/persons/{personID}", person.Destroy)
 	// GET /persons/{personId} – информация о человеке;
 	// GET /persons – информация по всем людям;
 	// POST /persons – создание новой записи о человеке;
