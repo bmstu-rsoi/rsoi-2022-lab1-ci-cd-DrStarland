@@ -21,7 +21,7 @@
     },
     "database": {
         "connection": "postgres",
-        "host": "0.0.0.0",
+        "host": "${DATABASE_URL}",
         "port": 5432,
         "name": "persons",
         "username": "program",
