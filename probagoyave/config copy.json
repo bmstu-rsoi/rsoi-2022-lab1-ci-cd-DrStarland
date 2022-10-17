@@ -1,7 +1,7 @@
 {
     "app": {
         "name": "probagoyave",
-        "environment": "heroku",
+        "environment": "localhost",
         "debug": true,
         "defaultLanguage": "en-US"
     },
@@ -21,11 +21,11 @@
     },
     "database": {
         "connection": "postgres",
-        "host": "ec2-63-32-248-14.eu-west-1.compute.amazonaws.com",
+        "host": "${DATABASE_URL}",
         "port": 5432,
-        "name": "d7tute07d3u68g",
-        "username": "vqlcxppersyinr",
-        "password": "e9471d873dada65c370c7ec26e2636410a9890f0de257c91c851cd31b81ba820",
+        "name": "persons",
+        "username": "program",
+        "password": "test",
         "options": "sslmode=disable application_name=goyave",
         "maxOpenConnections": 20,
         "maxIdleConnections": 20,
