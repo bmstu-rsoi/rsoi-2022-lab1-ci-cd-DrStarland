@@ -1,6 +1,7 @@
 package person
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -52,10 +53,12 @@ func Store(response *goyave.Response, request *goyave.Request) {
 	if err := database.Conn().Create(&person).Error; err != nil {
 		response.Error(err)
 	} else {
-		response.JSON(http.StatusCreated,
-			map[string]uint{
-				"id": person.ID,
-			})
+		// response.JSON(http.StatusCreated,
+		// 	// map[string]uint{
+		// 	// 	"id": person.ID,
+		// 	// })
+		response.Status(http.StatusCreated)
+		response.Header().Add("Location", fmt.Sprintf("/api/v1/persons/%d", person.ID))
 	}
 }
 

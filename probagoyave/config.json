@@ -1,0 +1,35 @@
+{
+    "app": {
+        "name": "probagoyave",
+        "environment": "localhost",
+        "debug": true,
+        "defaultLanguage": "en-US"
+    },
+    "server": {
+        "host": "0.0.0.0",
+        "maintenance": false,
+        "protocol": "http",
+        "domain": "",
+        "port": 8080,
+        "httpsPort": 8081,
+        "timeout": 10,
+        "maxUploadSize": 10,
+        "tls": {
+            "cert": "",
+            "key": ""
+        }
+    },
+    "database": {
+        "connection": "postgres",
+        "host": "0.0.0.0",
+        "port": 5432,
+        "name": "persons",
+        "username": "program",
+        "password": "test",
+        "options": "sslmode=disable application_name=goyave",
+        "maxOpenConnections": 20,
+        "maxIdleConnections": 20,
+        "maxLifetime": 300,
+        "autoMigrate": false
+    }
+}
