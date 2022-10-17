@@ -1,7 +1,7 @@
 # Этап, на котором выполняется сборка приложения
 FROM golang:1.16-alpine as builder
 WORKDIR /build
-COPY go.mod . # go.sum
+COPY ./probagoyave/go.mod . # go.sum
 RUN go mod download
 COPY ./probagoyave .
 RUN go build -o /main main.go
