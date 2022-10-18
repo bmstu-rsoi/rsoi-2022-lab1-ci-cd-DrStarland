@@ -54,13 +54,10 @@ func Register(router *goyave.Router) {
 	// DELETE /person/{personId} – удаление записи о человеке.
 
 	spec := goopen.NewGenerator().Generate(router)
-	// spec.AddServer(&openapi3.Server{
-	// 	URL: "https://dr-starlands-rsoi.herokuapp.com/",
-	// })
-	test := openapi3.Server{
+	// добавляем домен на хероку в список серверов
+	spec.AddServer(&openapi3.Server{
 		URL: "https://dr-starlands-rsoi.herokuapp.com/",
-	}
-	spec.AddServer(&test)
+	})
 	opts := goopen.NewUIOptions(spec)
 	goopen.Serve(router, "/openapi", opts)
 }

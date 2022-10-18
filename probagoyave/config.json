@@ -6,7 +6,7 @@
         "defaultLanguage": "en-US"
     },
     "server": {
-        "host": "0.0.0.0",
+        "host": "https://dr-starlands-rsoi.herokuapp.com/",
         "maintenance": false,
         "protocol": "http",
         "domain": "",
