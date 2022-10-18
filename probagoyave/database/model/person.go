@@ -26,6 +26,9 @@ func init() {
 	// https://github.com/go-gorm/postgres
 
 	sqlDB, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	if err != nil {
+		log.Println(err.Error())
+	}
 	gormDB, err := gorm.Open(postgres.New(postgres.Config{
 		Conn: sqlDB,
 	}), &gorm.Config{})
