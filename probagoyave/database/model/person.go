@@ -34,20 +34,6 @@ func init() {
 
 	log.Println("Sql DB ", sqlDB)
 
-	// gormDB, err := gorm.Open(postgres.New(postgres.Config{
-	// 	Conn: sqlDB,
-	// }), &gorm.Config{})
-	// if err != nil {
-	// 	log.Println(err.Error())
-	// }
-
-	// sqlDB, err := sql.Open("postgres", dsn)
-	// if err != nil {
-	// 	log.Println("!!!!!!!!!!!!!!!!!!!!!!", err.Error())
-	// }
-
-	log.Println("Sql DB ", sqlDB)
-
 	test := postgres.New(postgres.Config{Conn: sqlDB})
 	log.Println(test)
 
