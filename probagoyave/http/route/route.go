@@ -2,14 +2,17 @@ package route
 
 import (
 	"fmt"
+	"net/http"
 	"os"
+
+	"github.com/getkin/kin-openapi/openapi3"
 
 	"github.com/DrStarland/probagoyave/http/controller/hello"
 	"github.com/DrStarland/probagoyave/http/controller/person"
 
 	"goyave.dev/goyave/v4"
 	"goyave.dev/goyave/v4/cors"
-	"goyave.dev/openapi3"
+	goopen "goyave.dev/openapi3"
 )
 
 // Routing is an essential part of any Goyave application.
@@ -31,7 +34,7 @@ func Register(router *goyave.Router) {
 	// Route without validation
 	router.Get("/hello/{name}", hello.SayHi)
 	router.Get("/environ", func(r1 *goyave.Response, r2 *goyave.Request) {
-		r2.String(fmt.Sprintf("Hi, %v!", os.Environ()))
+		r1.String(http.StatusOK, fmt.Sprintf("Hi, %v!", os.Environ()))
 	})
 
 	// Route with validation
@@ -50,11 +53,14 @@ func Register(router *goyave.Router) {
 	// PATCH /persons/{personId} – обновление существующей записи о человеке;
 	// DELETE /person/{personId} – удаление записи о человеке.
 
-	spec := openapi3.NewGenerator().Generate(router)
+	spec := goopen.NewGenerator().Generate(router)
 	// spec.AddServer(&openapi3.Server{
 	// 	URL: "https://dr-starlands-rsoi.herokuapp.com/",
 	// })
-	opts := openapi3.NewUIOptions(spec)
-	opts.PresetURL = "https://dr-starlands-rsoi.herokuapp.com/"
-	openapi3.Serve(router, "/openapi", opts)
+	test := openapi3.Server{
+		URL: "https://dr-starlands-rsoi.herokuapp.com/",
+	}
+	spec.AddServer(&test)
+	opts := goopen.NewUIOptions(spec)
+	goopen.Serve(router, "/openapi", opts)
 }
