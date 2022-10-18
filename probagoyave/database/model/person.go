@@ -35,7 +35,7 @@ func init() {
 	log.Println("Sql DB ", sqlDB)
 
 	test := postgres.New(postgres.Config{Conn: sqlDB})
-	log.Println(test)
+	log.Println("test ", test)
 
 	huh, err := database.SetConnection(test)
 	log.Println(huh, err)

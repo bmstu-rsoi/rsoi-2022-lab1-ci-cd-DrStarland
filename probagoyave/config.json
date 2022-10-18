@@ -20,7 +20,7 @@
         }
     },
     "database": {
-        "connection": "${DATABASE_URL}",
+        "connection": "postgres",
         "host": "${DATABASE_URL}",
         "port": 5432,
         "username": "DrStarland",
