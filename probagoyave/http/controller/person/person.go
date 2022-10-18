@@ -107,7 +107,7 @@ func Update(response *goyave.Response, request *goyave.Request) {
 			}
 		}
 	}
-	response.Status(http.StatusOK)
+	response.JSON(http.StatusOK, pers)
 }
 
 // Метод удаления информации о человеке
