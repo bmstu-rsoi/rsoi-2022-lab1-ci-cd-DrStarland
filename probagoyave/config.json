@@ -20,7 +20,15 @@
         }
     },
     "database": {
-        "connection": "postgres",
-        "host": "${DATABASE_URL}"
+        "connection": "${DATABASE_URL}",
+        "host": "${DATABASE_URL}",
+        "port": 5432,
+        "username": "DrStarland",
+        "password": "0",
+        "options": "sslmode=required application_name=goyave",
+        "maxOpenConnections": 20,
+        "maxIdleConnections": 20,
+        "maxLifetime": 300,
+        "autoMigrate": false
     }
 }
