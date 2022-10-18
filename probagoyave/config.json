@@ -21,15 +21,6 @@
     },
     "database": {
         "connection": "postgres",
-        "host": "${DATABASE_URL}",
-        "port": 5432,
-        "name": "d7tute07d3u68g",
-        "username": "vqlcxppersyinr",
-        "password": "e9471d873dada65c370c7ec26e2636410a9890f0de257c91c851cd31b81ba820",
-        "options": "sslmode=require",
-        "maxOpenConnections": 20,
-        "maxIdleConnections": 20,
-        "maxLifetime": 300,
-        "autoMigrate": false
+        "host": "${DATABASE_URL}"
     }
 }

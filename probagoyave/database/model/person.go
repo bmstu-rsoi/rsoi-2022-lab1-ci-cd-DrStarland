@@ -15,7 +15,6 @@ import (
 
 func init() {
 	// All models should be registered in an "init()" function inside their model file.
-	// database.RegisterModel(&User{})
 	database.RegisterModel(&Person{})
 }
 

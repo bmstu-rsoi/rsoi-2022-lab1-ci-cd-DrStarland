@@ -24,4 +24,5 @@ func main() {
 	if err := goyave.Start(route.Register); err != nil {
 		os.Exit(err.(*goyave.Error).ExitCode)
 	}
+	//goyave.
 }
