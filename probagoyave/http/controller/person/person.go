@@ -69,38 +69,38 @@ func Update(response *goyave.Response, request *goyave.Request) {
 	db := model.Conn()
 	result := db.Select("id").First(&pers, request.Params["personID"])
 	if response.HandleDatabaseError(result) {
-		age, ageExist := request.Data["age"]
-		name, nameExist := request.Data["name"]
-		address, addrExist := request.Data["address"]
-		work, workExist := request.Data["work"]
+		_, ageExist := request.Data["age"]
+		_, nameExist := request.Data["name"]
+		_, addrExist := request.Data["address"]
+		_, workExist := request.Data["work"]
 
 		if !(ageExist || nameExist || addrExist || workExist) {
 			response.Status(http.StatusBadRequest)
 			return
 		}
 
-		if name != nil {
+		if nameExist {
 			name := request.String("name")
 			if err := db.Model(&pers).Update("name", name).Error; err != nil {
 				response.Error(err)
 			}
 		}
 
-		if age != nil {
+		if ageExist {
 			age := int32(request.Integer("age"))
 			if err := db.Model(&pers).Update("age", age).Error; err != nil {
 				response.Error(err)
 			}
 		}
 
-		if work != nil {
+		if workExist {
 			work := request.String("work")
 			if err := db.Model(&pers).Update("work", work).Error; err != nil {
 				response.Error(err)
 			}
 		}
 
-		if address != nil {
+		if addrExist {
 			address := request.String("address")
 			if err := db.Model(&pers).Update("address", address).Error; err != nil {
 				response.Error(err)
