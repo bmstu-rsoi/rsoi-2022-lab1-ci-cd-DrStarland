@@ -34,14 +34,25 @@ func init() {
 
 	log.Println("Sql DB ", sqlDB)
 
-	gormDB, err := gorm.Open(postgres.New(postgres.Config{
-		Conn: sqlDB,
-	}), &gorm.Config{})
-	if err != nil {
-		log.Println(err.Error())
-	}
+	// gormDB, err := gorm.Open(postgres.New(postgres.Config{
+	// 	Conn: sqlDB,
+	// }), &gorm.Config{})
+	// if err != nil {
+	// 	log.Println(err.Error())
+	// }
 
-	database.SetConnection(gormDB.Dialector)
+	// sqlDB, err := sql.Open("postgres", dsn)
+	// if err != nil {
+	// 	log.Println("!!!!!!!!!!!!!!!!!!!!!!", err.Error())
+	// }
+
+	log.Println("Sql DB ", sqlDB)
+
+	test := postgres.New(postgres.Config{Conn: sqlDB})
+	log.Println(test)
+
+	huh, err := database.SetConnection(test)
+	log.Println(huh, err)
 
 	database.RegisterModel(&Person{})
 }
