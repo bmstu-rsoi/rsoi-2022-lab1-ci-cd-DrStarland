@@ -5,6 +5,8 @@ import (
 	"log"
 	"os"
 
+	_ "github.com/lib/pq"
+
 	"github.com/bxcodec/faker/v3"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -35,6 +37,7 @@ func init() {
 	if err != nil {
 		log.Println(err.Error())
 	}
+
 	database.SetConnection(gormDB.Dialector)
 
 	database.RegisterModel(&Person{})
