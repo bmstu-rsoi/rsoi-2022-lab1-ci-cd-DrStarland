@@ -26,6 +26,7 @@ func init() {
 	// postgres://vqlcxppersyinr:e9471d873dada65c370c7ec26e2636410a9890f0de257c91c851cd31b81ba820@ec2-63-32-248-14.eu-west-1.compute.amazonaws.com:5432/d7tute07d3u68g
 	// database.RegisterDialect("postgres", "postgres://{username}:{password}@{host}:{port}/{name}", postgres.Open)
 	// https://github.com/go-gorm/postgres
+	log.Println(os.Environ())
 
 	sqlDB, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if err != nil {

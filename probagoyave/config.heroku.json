@@ -1,0 +1,34 @@
+{
+    "app": {
+        "name": "probagoyave",
+        "environment": "heroku",
+        "debug": true,
+        "defaultLanguage": "en-US"
+    },
+    "server": {
+        "host": "0.0.0.0",
+        "maintenance": false,
+        "protocol": "http",
+        "domain": "",
+        "port": "${PORT}",
+        "httpsPort": 8081,
+        "timeout": 10,
+        "maxUploadSize": 10,
+        "tls": {
+            "cert": "",
+            "key": ""
+        }
+    },
+    "database": {
+        "connection": "postgres",
+        "host": "${DATABASE_URL}",
+        "port": 5432,
+        "username": "DrStarland",
+        "password": "0",
+        "options": "sslmode=required application_name=goyave",
+        "maxOpenConnections": 20,
+        "maxIdleConnections": 20,
+        "maxLifetime": 300,
+        "autoMigrate": false
+    }
+}
