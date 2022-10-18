@@ -14,7 +14,11 @@ jobs:
           fetch-depth: 0    
         
       - name: Build
-        uses: tinted-theming/base16-builder-go@v0.2.3
+        uses: aevea/action-kaniko@master
+        with:
+          image: godocker
+          cache: true
+          cache_registry: aevea/cache
 
         
       - name: Deploy project
