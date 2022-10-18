@@ -2,7 +2,6 @@ package model
 
 import (
 	"github.com/bxcodec/faker/v3"
-	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"goyave.dev/goyave/v4/database"
 )
@@ -18,7 +17,7 @@ func init() {
 	// All models should be registered in an "init()" function inside their model file.
 
 	// postgres://vqlcxppersyinr:e9471d873dada65c370c7ec26e2636410a9890f0de257c91c851cd31b81ba820@ec2-63-32-248-14.eu-west-1.compute.amazonaws.com:5432/d7tute07d3u68g
-	database.RegisterDialect("postgres", "postgres://{username}:{password}@{host}:{port}/{name}", postgres.Open)
+	// database.RegisterDialect("postgres", "postgres://{username}:{password}@{host}:{port}/{name}", postgres.Open)
 
 	database.RegisterModel(&Person{})
 }
