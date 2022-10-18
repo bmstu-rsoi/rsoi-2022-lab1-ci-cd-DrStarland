@@ -117,7 +117,7 @@ func Update(response *goyave.Response, request *goyave.Request) {
 			}
 		}
 	}
-	db.Select("id").First(&pers, request.Params["personID"])
+	db.First(&pers, request.Params["personID"])
 	response.JSON(http.StatusOK, pers)
 }
 
