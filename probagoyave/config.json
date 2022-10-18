@@ -9,7 +9,7 @@
         "host": "0.0.0.0",
         "maintenance": false,
         "protocol": "http",
-        "domain": "",
+        "domain": "https://dr-starlands-rsoi.herokuapp.com/",
         "port": "${PORT}",
         "httpsPort": 8081,
         "timeout": 10,
