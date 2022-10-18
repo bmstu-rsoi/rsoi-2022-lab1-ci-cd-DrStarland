@@ -10,7 +10,6 @@ import (
 	"github.com/bxcodec/faker/v3"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"goyave.dev/goyave/v4/database"
 )
 
 // A model is a structure reflecting a database table structure. An instance of a model
@@ -35,13 +34,14 @@ func init() {
 
 	log.Println("Sql DB ", sqlDB)
 
-	test := postgres.New(postgres.Config{Conn: sqlDB})
-	log.Println("test ", test)
+	//database.RegisterModel(&Person{})
 
-	huh, err := database.SetConnection(test)
-	log.Println(huh, err)
+	gormDB, err := gorm.Open(postgres.New(postgres.Config{
+		Conn: sqlDB,
+	}), &gorm.Config{})
 
-	database.RegisterModel(&Person{})
+	migre := gormDB.Migrator()
+	migre.AutoMigrate(&Person{})
 }
 
 type Person struct {
