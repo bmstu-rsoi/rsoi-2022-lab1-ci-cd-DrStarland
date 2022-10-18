@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 	"os"
+	"time"
 
 	_ "github.com/lib/pq"
 
@@ -53,11 +54,14 @@ func init() {
 }
 
 type Person struct {
-	gorm.Model
-	Name    string
-	Age     int32
-	Address string
-	Work    string
+	ID        uint `gorm:"primarykey" json:"id"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt gorm.DeletedAt `gorm:"index"`
+	Name      string         `json:"name"`
+	Age       int32          `json:"age"`
+	Address   string         `json:"address"`
+	Work      string         `json:"work"`
 }
 
 func PersonGenerator() interface{} {
