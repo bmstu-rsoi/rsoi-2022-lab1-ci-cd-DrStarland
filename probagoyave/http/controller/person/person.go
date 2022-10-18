@@ -7,7 +7,6 @@ import (
 
 	"github.com/DrStarland/probagoyave/database/model"
 	"goyave.dev/goyave/v4"
-	"goyave.dev/goyave/v4/database"
 )
 
 func Hohoho(response *goyave.Response, request *goyave.Request) {
@@ -19,7 +18,8 @@ func Hohoho(response *goyave.Response, request *goyave.Request) {
 
 // Получить информацию по всем людям
 func Index(response *goyave.Response, request *goyave.Request) {
-	db := database.GetConnection()
+	// db := database.GetConnection()
+	db := model.Conn()
 	var results []map[string]interface{}
 	db.Model(&model.Person{}).Find(&results)
 	response.JSON(http.StatusOK, results)
@@ -34,7 +34,8 @@ func Show(response *goyave.Response, request *goyave.Request) {
 	// db.Table("people").Find(&results, "id = ?", ID)
 	// response.JSON(http.StatusOK, results)
 	pers := model.Person{}
-	result := database.Conn().First(&pers, request.Params["personID"])
+	db := model.Conn()
+	result := db.First(&pers, request.Params["personID"])
 	if response.HandleDatabaseError(result) {
 		response.JSON(http.StatusOK, pers)
 	}
@@ -43,14 +44,14 @@ func Show(response *goyave.Response, request *goyave.Request) {
 // Метод создания новой записи о человеке
 func Store(response *goyave.Response, request *goyave.Request) {
 	log.Println(request.Data)
-
+	db := model.Conn()
 	person := model.Person{
 		Name:    request.String("name"),
 		Age:     int32(request.Integer("age")),
 		Address: request.String("address"),
 		Work:    request.String("work"),
 	}
-	if err := database.Conn().Create(&person).Error; err != nil {
+	if err := db.Create(&person).Error; err != nil {
 		response.Error(err)
 	} else {
 		// response.JSON(http.StatusCreated,
@@ -65,7 +66,7 @@ func Store(response *goyave.Response, request *goyave.Request) {
 // Метод обновления информации о человеке
 func Update(response *goyave.Response, request *goyave.Request) {
 	pers := model.Person{}
-	db := database.Conn()
+	db := model.Conn()
 	result := db.Select("id").First(&pers, request.Params["personID"])
 	if response.HandleDatabaseError(result) {
 		age, ageExist := request.Data["age"]
@@ -112,7 +113,7 @@ func Update(response *goyave.Response, request *goyave.Request) {
 // Метод удаления информации о человеке
 func Destroy(response *goyave.Response, request *goyave.Request) {
 	pers := model.Person{}
-	db := database.Conn()
+	db := model.Conn()
 	result := db.Select("id").First(&pers, request.Params["personID"])
 	if response.HandleDatabaseError(result) {
 		if err := db.Delete(&pers).Error; err != nil {

@@ -19,6 +19,12 @@ import (
 
 // Learn more here: https://goyave.dev/guide/basics/database.html#models
 
+var globalDB *gorm.DB
+
+func Conn() *gorm.DB {
+	return globalDB
+}
+
 func init() {
 	// All models should be registered in an "init()" function inside their model file.
 
@@ -42,6 +48,8 @@ func init() {
 
 	migre := gormDB.Migrator()
 	migre.AutoMigrate(&Person{})
+
+	globalDB = gormDB
 }
 
 type Person struct {
