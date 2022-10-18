@@ -3,9 +3,7 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
+      - develop
 jobs:
   build:
     name: Autograding
@@ -13,17 +11,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
-
-      # TODO build, test and deploy project
-
-      - name: Run API Tests
-        uses: matt-ball/newman-action@master
+          fetch-depth: 0    
+        
+      - name: Deploy project
+        uses: akhileshns/heroku-deploy@v3.4.6
         with:
-          collection: postman/[inst] Lab1.postman_collection.json
-          environment: postman/[inst][heroku] Lab1.postman_environment.json
-          delayRequest: 100
-          reporters: '[ "cli" ]'
+          heroku_api_key: 39c7221c-3760-4ee1-9b68-d52ac0a3dfc8
+          heroku_app_name: dr-starlands-rsoi
+          heroku_email: viktor.goryachev.00@mail.ru
+          usedocker: true
 
       - name: Autograding
         uses: education/autograding@v1

@@ -1,0 +1,30 @@
+version: "2"
+
+services:
+  server_db:
+    image: postgres
+    restart: always
+    container_name: server_db
+    ports: ["5432:5432"]
+    environment:
+      POSTGRES_USER: program
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: persons
+    volumes: [server_volume:/var/lib/postgresql/data]
+    networks:
+      - service_network
+
+  server:
+    image: test
+    restart: always
+    container_name: server
+    ports: ["8080:8080"]
+    depends_on: [server_db]
+    networks:
+      - service_network
+
+volumes:
+  server_volume: {}
+
+networks:
+  service_network: { driver: bridge }
