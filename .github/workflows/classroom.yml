@@ -14,12 +14,9 @@ jobs:
           fetch-depth: 0    
         
       - name: Build
-        uses: aevea/action-kaniko@master
+        uses: docker/build-push-action@v3.2.0
         with:
           image: godocker
-          cache: true
-          cache_registry: aevea/cache
-
         
       - name: Deploy project
         uses: akhileshns/heroku-deploy@v3.4.6
