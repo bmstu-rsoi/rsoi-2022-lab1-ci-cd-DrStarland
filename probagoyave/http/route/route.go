@@ -1,6 +1,9 @@
 package route
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/DrStarland/probagoyave/http/controller/hello"
 	"github.com/DrStarland/probagoyave/http/controller/person"
 
@@ -27,6 +30,9 @@ func Register(router *goyave.Router) {
 
 	// Route without validation
 	router.Get("/hello/{name}", hello.SayHi)
+	router.Get("/environ", func(r1 *goyave.Response, r2 *goyave.Request) {
+		r2.String(fmt.Sprintf("Hi, %v!", os.Environ()))
+	})
 
 	// Route with validation
 	router.Post("/echo", hello.Echo).Validate(hello.EchoRequest)
@@ -45,7 +51,10 @@ func Register(router *goyave.Router) {
 	// DELETE /person/{personId} – удаление записи о человеке.
 
 	spec := openapi3.NewGenerator().Generate(router)
+	// spec.AddServer(&openapi3.Server{
+	// 	URL: "https://dr-starlands-rsoi.herokuapp.com/",
+	// })
 	opts := openapi3.NewUIOptions(spec)
+	opts.PresetURL = "https://dr-starlands-rsoi.herokuapp.com/"
 	openapi3.Serve(router, "/openapi", opts)
-
 }
