@@ -8,7 +8,7 @@
     "server": {
         "host": "0.0.0.0",
         "maintenance": false,
-        "protocol": "https",
+        "protocol": "http",
         "domain": "dr-starlands-rsoi.herokuapp.com/",
         "port": "${PORT}",
         "httpsPort": "${PORT}",
