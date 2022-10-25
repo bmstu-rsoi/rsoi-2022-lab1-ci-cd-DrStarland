@@ -3,7 +3,6 @@ package test
 import (
 	"bytes"
 	"encoding/json"
-	"log"
 	"testing"
 
 	"github.com/DrStarland/probagoyave/http/route"
@@ -53,40 +52,42 @@ func (suite *HelloTestSuite) TestHello() {
 // subrouter.Patch("/persons/{personID}", person.Update).Validate(person.PatchRequest)
 // subrouter.Delete("/persons/{personID}", person.Destroy)
 
-func (suite *HelloTestSuite) TestGetPerson() {
-	// suite.RunServer(route.Register, func() {
-	// 	resp, err := suite.Get("/api/v1/persons", nil)
-	// 	suite.Nil(err)
-	// 	suite.NotNil(resp)
-	// 	if resp != nil {
-	// 		defer resp.Body.Close()
-	// 		suite.Equal(200, resp.StatusCode)
-	// 		suite.Equal("Hi, Al!", string(suite.GetBody(resp)))
-	// 	}
-	// })
-	headers := map[string]string{"Content-Type": "application/json"}
-	body, _ := json.Marshal(map[string]interface{}{"address": "3682 Hyatt Creek", "age": 31, "id": 24, "name": "Elijah67", "work": "Watsica - Heller"})
-	_, err := suite.Post("/api/v1/persons", headers, bytes.NewReader(body))
-	if err != nil {
-		log.Println(err.Error())
-	}
+// func (suite *HelloTestSuite) TestGetPerson() {
+// 	// suite.RunServer(route.Register, func() {
+// 	// 	resp, err := suite.Get("/api/v1/persons", nil)
+// 	// 	suite.Nil(err)
+// 	// 	suite.NotNil(resp)
+// 	// 	if resp != nil {
+// 	// 		defer resp.Body.Close()
+// 	// 		suite.Equal(200, resp.StatusCode)
+// 	// 		suite.Equal("Hi, Al!", string(suite.GetBody(resp)))
+// 	// 	}
+// 	// })
+// 	headers := map[string]string{"Content-Type": "application/json"}
+// 	body, _ := json.Marshal(map[string]interface{}{"address": "3682 Hyatt Creek", "age": 31, "id": 24, "name": "Elijah67", "work": "Watsica - Heller"})
+// 	_, err := suite.Post("/api/v1/persons", headers, bytes.NewReader(body))
+// 	// log.Println("RESP ", resp)
+// 	// resp.Body.Close()
+// 	if err != nil {
+// 		log.Println(err.Error())
+// 	}
 
-	suite.RunServer(route.Register, func() {
-		resp, err := suite.Get("/api/v1/persons", nil)
-		suite.Nil(err)
-		if err == nil {
-			defer resp.Body.Close()
-			json := map[string]interface{}{}
-			err := suite.GetJSONBody(resp, &json)
-			suite.Nil(err)
-			if err == nil { // You should always check parsing error before continuing.
-				log.Println(json)
-				suite.Equal("value", json["field"])
-				suite.Equal(float64(42), json["number"])
-			}
-		}
-	})
-}
+// 	suite.RunServer(route.Register, func() {
+// 		resp, err := suite.Get("/api/v1/persons", nil)
+// 		suite.Nil(err)
+// 		if err == nil {
+// 			defer resp.Body.Close()
+// 			json := map[string]interface{}{}
+// 			err := suite.GetJSONBody(resp, &json)
+// 			suite.Nil(err)
+// 			if err == nil { // You should always check parsing error before continuing.
+// 				log.Println(json)
+// 				suite.Equal("value", json["field"])
+// 				suite.Equal(float64(42), json["number"])
+// 			}
+// 		}
+// 	})
+// }
 
 // headers := map[string]string{"Content-Type": "application/json"}
 // body, _ := json.Marshal(map[string]interface{}{"name": "Pizza", "price": 12.5})

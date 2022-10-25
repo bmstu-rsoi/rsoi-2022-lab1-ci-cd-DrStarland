@@ -21,7 +21,7 @@ jobs:
       - name: Deploy project
         uses: akhileshns/heroku-deploy@v3.4.6
         with:
-          heroku_api_key: 39c7221c-3760-4ee1-9b68-d52ac0a3dfc8
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: dr-starlands-rsoi
           heroku_email: viktor.goryachev.00@mail.ru
           usedocker: true

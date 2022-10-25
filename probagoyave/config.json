@@ -11,7 +11,7 @@
         "protocol": "https",
         "domain": "dr-starlands-rsoi.herokuapp.com/",
         "port": "${PORT}",
-        "httpsPort": 8081,
+        "httpsPort": "${PORT}",
         "timeout": 10,
         "maxUploadSize": 10,
         "tls": {
