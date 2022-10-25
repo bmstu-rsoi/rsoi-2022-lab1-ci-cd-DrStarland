@@ -3,10 +3,12 @@ package test
 import (
 	"bytes"
 	"encoding/json"
+	"log"
 	"testing"
 
 	"github.com/DrStarland/probagoyave/http/route"
 
+	_ "github.com/DrStarland/probagoyave/database/model"
 	"goyave.dev/goyave/v4"
 	"goyave.dev/goyave/v4/validation"
 )
@@ -32,16 +34,90 @@ type HelloTestSuite struct { // Create a test suite for the Hello controller
 
 func (suite *HelloTestSuite) TestHello() {
 	suite.RunServer(route.Register, func() {
-		resp, err := suite.Get("/hello", nil)
+		resp, err := suite.Get("/hello/Al", nil)
 		suite.Nil(err)
 		suite.NotNil(resp)
 		if resp != nil {
 			defer resp.Body.Close()
 			suite.Equal(200, resp.StatusCode)
-			suite.Equal("Hi!", string(suite.GetBody(resp)))
+			suite.Equal("Hi, Al!", string(suite.GetBody(resp)))
 		}
 	})
 }
+
+// subrouter := router.Subrouter("/api/v1")
+
+// subrouter.Get("/persons", person.Index)
+// subrouter.Get("/persons/{personID}", person.Show)
+// subrouter.Post("/persons", person.Store).Validate(person.PersonRequest)
+// subrouter.Patch("/persons/{personID}", person.Update).Validate(person.PatchRequest)
+// subrouter.Delete("/persons/{personID}", person.Destroy)
+
+func (suite *HelloTestSuite) TestGetPerson() {
+	// suite.RunServer(route.Register, func() {
+	// 	resp, err := suite.Get("/api/v1/persons", nil)
+	// 	suite.Nil(err)
+	// 	suite.NotNil(resp)
+	// 	if resp != nil {
+	// 		defer resp.Body.Close()
+	// 		suite.Equal(200, resp.StatusCode)
+	// 		suite.Equal("Hi, Al!", string(suite.GetBody(resp)))
+	// 	}
+	// })
+	headers := map[string]string{"Content-Type": "application/json"}
+	body, _ := json.Marshal(map[string]interface{}{"address": "3682 Hyatt Creek", "age": 31, "id": 24, "name": "Elijah67", "work": "Watsica - Heller"})
+	_, err := suite.Post("/api/v1/persons", headers, bytes.NewReader(body))
+	if err != nil {
+		log.Println(err.Error())
+	}
+
+	suite.RunServer(route.Register, func() {
+		resp, err := suite.Get("/api/v1/persons", nil)
+		suite.Nil(err)
+		if err == nil {
+			defer resp.Body.Close()
+			json := map[string]interface{}{}
+			err := suite.GetJSONBody(resp, &json)
+			suite.Nil(err)
+			if err == nil { // You should always check parsing error before continuing.
+				log.Println(json)
+				suite.Equal("value", json["field"])
+				suite.Equal(float64(42), json["number"])
+			}
+		}
+	})
+}
+
+// headers := map[string]string{"Content-Type": "application/json"}
+// body, _ := json.Marshal(map[string]interface{}{"name": "Pizza", "price": 12.5})
+// resp, err := suite.Post("/product", headers, bytes.NewReader(body))
+// suite.Nil(err)
+// if err == nil {
+//     defer resp.Body.Close()
+//     suite.Equal("response content", string(suite.GetBody(resp)))
+// }
+
+// suite.RunServer(route.Register, func() {
+//     resp, err := suite.Get("/product", nil)
+//     suite.Nil(err)
+//     if err == nil {
+//         defer resp.Body.Close()
+//         json := map[string]interface{}{}
+//         err := suite.GetJSONBody(resp, &json)
+//         suite.Nil(err)
+//         if err == nil { // You should always check parsing error before continuing.
+//             suite.Equal("value", json["field"])
+//             suite.Equal(float64(42), json["number"])
+//         }
+//     }
+// })
+
+// writer := httptest.NewRecorder()
+// rawRequest := httptest.NewRequest("POST", "/test-route", strings.NewReader("body"))
+// response := suite.CreateTestResponseWithRequest(writer, rawRequest)
+// response.Status(http.StatusNoContent)
+// result := writer.Result()
+// fmt.Println(result.StatusCode)
 
 func (suite *HelloTestSuite) TestEcho() {
 	suite.RunServer(route.Register, func() {

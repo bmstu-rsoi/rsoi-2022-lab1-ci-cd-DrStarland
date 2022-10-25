@@ -68,7 +68,7 @@ func Update(response *goyave.Response, request *goyave.Request) {
 	pers := model.Person{}
 	db := model.Conn()
 	result := db.Select("id").First(&pers, request.Params["personID"])
-	log.Println("Searching: ", result)
+	// log.Println("Searching: ", result)
 	if response.HandleDatabaseError(result) {
 		ag, ageExist := request.Data["age"]
 		nam, nameExist := request.Data["name"]
@@ -87,7 +87,7 @@ func Update(response *goyave.Response, request *goyave.Request) {
 
 		if nameExist {
 			name := request.String("name")
-			log.Println(name)
+			// log.Println(name)
 			if err := db.Model(&pers).Update("name", name).Error; err != nil {
 				response.Error(err)
 			}
@@ -95,7 +95,7 @@ func Update(response *goyave.Response, request *goyave.Request) {
 
 		if ageExist {
 			age := int32(request.Integer("age"))
-			log.Println(age)
+			// log.Println(age)
 			if err := db.Model(&pers).Update("age", age).Error; err != nil {
 				response.Error(err)
 			}
@@ -103,7 +103,7 @@ func Update(response *goyave.Response, request *goyave.Request) {
 
 		if workExist {
 			work := request.String("work")
-			log.Println(work)
+			// log.Println(work)
 			if err := db.Model(&pers).Update("work", work).Error; err != nil {
 				response.Error(err)
 			}
@@ -111,7 +111,7 @@ func Update(response *goyave.Response, request *goyave.Request) {
 
 		if addrExist {
 			address := request.String("address")
-			log.Println(address)
+			// log.Println(address)
 			if err := db.Model(&pers).Update("address", address).Error; err != nil {
 				response.Error(err)
 			}
