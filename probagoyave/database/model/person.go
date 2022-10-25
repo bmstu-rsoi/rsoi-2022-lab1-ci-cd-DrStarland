@@ -7,6 +7,7 @@ import (
 	"time"
 
 	_ "github.com/lib/pq"
+	"goyave.dev/goyave/v4/database"
 
 	"github.com/bxcodec/faker/v3"
 	"gorm.io/driver/postgres"
@@ -51,6 +52,8 @@ func init() {
 	migre.AutoMigrate(&Person{})
 
 	globalDB = gormDB
+
+	database.SetConnection(gormDB.Dialector)
 }
 
 type Person struct {
